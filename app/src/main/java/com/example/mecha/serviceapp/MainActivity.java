@@ -1,6 +1,7 @@
 package com.example.mecha.serviceapp;
 
 import android.Manifest;
+import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.NotificationCompat;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -21,8 +23,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private Button bStart, bStop;
     private TextView textView;
+    private Button bNotificacion;
     //para permitir que llegue el broadcast
     private BroadcastReceiver broadcastReceiver;
+
 
     //este método permite ir tomando los datos que toma el service
     @Override
@@ -53,9 +57,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
         bStart = (Button) findViewById(R.id.buttonStart);
         bStop = (Button) findViewById(R.id.buttonStop);
         textView = (TextView) findViewById(R.id.textView);
+        bNotificacion = (Button) findViewById(R.id.botonN);
 
         if(!runtime_permission()){
             enable_buttons();
@@ -81,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void enable_buttons(){
         bStart.setOnClickListener(this);
         bStop.setOnClickListener(this);
+        bNotificacion.setOnClickListener(this);
     }
 
     @Override
@@ -103,12 +111,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.buttonStart:
                 Intent start = new Intent(getApplicationContext(), GPSService.class);
                 startService(start);
+                NotificationCompat.Builder mBuilder;
+                NotificationManager mNotifyMgr = (NotificationManager) getApplicationContext().getSystemService(NOTIFICATION_SERVICE);
+
                 break;
 
             case R.id.buttonStop:
                 Intent stop = new Intent(getApplicationContext(), GPSService.class);
                 stopService(stop);
                 break;
+
+            case R.id.botonN:
+
         }
     }
 }

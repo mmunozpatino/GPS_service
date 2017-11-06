@@ -1,6 +1,7 @@
 package com.example.mecha.serviceapp;
 
 import android.Manifest;
+import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -13,11 +14,14 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.NotificationCompat;
 
 public class GPSService extends Service {
 
     private LocationListener listener;
     private LocationManager locationManager;
+    private NotificationManager notificationManager;
+    private static final int ID_NOTIFICACION = 1234;
 
     public GPSService() {
     }
@@ -31,9 +35,28 @@ public class GPSService extends Service {
     @Override
     public void onCreate() {
 
+        //instanciamos el manager
+        notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
         listener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
+                if(location.getLongitude() <= -68.845  && location.getLongitude() >= -68.849 && location.getLatitude() >= -32.916 && location.getLatitude() <= -32.912){
+                    long vibrate[]={0,100,100};
+                    NotificationCompat.Builder builder = (NotificationCompat.Builder) new NotificationCompat.Builder(
+                            getBaseContext())
+                            .setSmallIcon(android.R.drawable.ic_dialog_info)
+                            .setContentTitle("Ubicacion marcada")
+                            .setContentText("te encuentas ubicado en una ubicacion predefinida!")
+                            .setVibrate(vibrate)
+                            .setWhen(System.currentTimeMillis());
+
+                    notificationManager.notify(ID_NOTIFICACION,builder.build());
+                }else{
+                    notificationManager.cancel(ID_NOTIFICACION);
+                }
+
+
                 //tomo cada nueva location
                 Intent i = new Intent("location_update");
                 i.putExtra("coordinates", location.getLongitude()+" "+location.getLatitude());
