@@ -21,7 +21,7 @@ import java.util.jar.Pack200;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Button bStart, bStop;
+    private Button bStart, bStop, bMapa;
     private TextView textView;
     private Button bNotificacion;
     //para permitir que llegue el broadcast
@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         bStart = (Button) findViewById(R.id.buttonStart);
         bStop = (Button) findViewById(R.id.buttonStop);
         textView = (TextView) findViewById(R.id.textView);
-        bNotificacion = (Button) findViewById(R.id.botonN);
+        bMapa = (Button) findViewById(R.id.Bmap);
 
         if(!runtime_permission()){
             enable_buttons();
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void enable_buttons(){
         bStart.setOnClickListener(this);
         bStop.setOnClickListener(this);
-        bNotificacion.setOnClickListener(this);
+        bMapa.setOnClickListener(this);
     }
 
     @Override
@@ -121,8 +121,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 stopService(stop);
                 break;
 
-            case R.id.botonN:
-
+            case R.id.Bmap:
+                Intent mapa = new Intent(this, MapsActivity.class);
+                startActivity(mapa);
+                break;
         }
     }
 }

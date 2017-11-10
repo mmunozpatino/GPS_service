@@ -1,7 +1,9 @@
 package com.example.mecha.serviceapp;
 
 import android.Manifest;
+import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -9,12 +11,12 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.media.audiofx.BassBoost;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.NotificationCompat;
+//import android.support.v7.app.NotificationCompat;
+
 
 public class GPSService extends Service {
 
@@ -37,21 +39,22 @@ public class GPSService extends Service {
 
         //instanciamos el manager
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-
+        Intent url = new Intent(this, MainActivity.class);
+        final PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, url, 0);
         listener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                if(location.getLongitude() <= -68.845  && location.getLongitude() >= -68.849 && location.getLatitude() >= -32.916 && location.getLatitude() <= -32.912){
+                if(-68.849 < location.getLongitude() && location.getLongitude() < -68.845 && -32.916 < location.getLatitude() && location.getLatitude() < -32.912){
                     long vibrate[]={0,100,100};
-                    NotificationCompat.Builder builder = (NotificationCompat.Builder) new NotificationCompat.Builder(
-                            getBaseContext())
+                    Notification notification = new Notification.Builder(getApplicationContext())
                             .setSmallIcon(android.R.drawable.ic_dialog_info)
                             .setContentTitle("Ubicacion marcada")
                             .setContentText("te encuentas ubicado en una ubicacion predefinida!")
                             .setVibrate(vibrate)
-                            .setWhen(System.currentTimeMillis());
-
-                    notificationManager.notify(ID_NOTIFICACION,builder.build());
+                            //.setWhen(System.currentTimeMillis())
+                            .setContentIntent(pendingIntent)
+                            .build();
+                    notificationManager.notify(ID_NOTIFICACION,notification);
                 }else{
                     notificationManager.cancel(ID_NOTIFICACION);
                 }
