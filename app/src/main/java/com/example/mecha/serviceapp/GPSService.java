@@ -39,7 +39,7 @@ public class GPSService extends Service {
 
         //instanciamos el manager
         notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-        Intent url = new Intent(this, MainActivity.class);
+        Intent url = new Intent(this, MapsActivity.class);
         final PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, url, 0);
         listener = new LocationListener() {
             @Override
