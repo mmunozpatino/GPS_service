@@ -21,6 +21,7 @@ import android.support.v4.app.ActivityCompat;
 public class GPSService extends Service {
 
     // hola desde mi compu
+    //cambio desde rama
     private LocationListener listener;
     private LocationManager locationManager;
     private NotificationManager notificationManager;
