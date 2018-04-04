@@ -20,6 +20,7 @@ import android.support.v4.app.ActivityCompat;
 
 public class GPSService extends Service {
 
+    // hola desde mi compu
     private LocationListener listener;
     private LocationManager locationManager;
     private NotificationManager notificationManager;
